@@ -17,6 +17,26 @@ public class MessagesServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("Hello Post");
+
+        Messages m = new Messages(
+                request.getParameter("author"),
+                request.getParameter("message")
+        );
+
+        try {
+
+            Statement stmt = Connection.createStatement();
+
+            String sql = String.format("INSERT INTO msg (author, message) VALUES('%s', '%s')", m.getAuthor(), m.getMessage());
+
+            stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        response.setStatus(418);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
