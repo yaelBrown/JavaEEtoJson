@@ -1,7 +1,7 @@
 public class Config {
 
     public static String getUrl() {
-        return "jdbc:mysql://localhost/movies_db?serverTimezone=UTC&useSSL=false";
+        return "jdbc:mysql://localhost/messages?serverTimezone=UTC&useSSL=false";
     }
 
     public static String getUsername() {
