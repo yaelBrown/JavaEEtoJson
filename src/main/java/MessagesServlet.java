@@ -24,8 +24,14 @@ public class MessagesServlet extends HttpServlet {
         );
 
         try {
+            DriverManager.registerDriver(new Driver());
+            Connection c = DriverManager.getConnection(
+                    Config.getUrl(),
+                    Config.getUsername(),
+                    Config.getPassword()
+            );
 
-            Statement stmt = Connection.createStatement();
+            Statement stmt = c.createStatement();
 
             String sql = String.format("INSERT INTO msg (author, message) VALUES('%s', '%s')", m.getAuthor(), m.getMessage());
 
@@ -36,7 +42,10 @@ public class MessagesServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        response.setStatus(418);
+            PrintWriter out = response.getWriter();
+            out.print("Message saved!");
+
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -51,15 +60,23 @@ public class MessagesServlet extends HttpServlet {
             );
 
             Statement s = c.createStatement();
-            ResultSet rs = s.executeQuery("SELECT * FROM msg");
+            String sql = "SELECT * FROM msg";
 
-            Map<String, String> gsonReturn = new HashMap<>();
+            ResultSet rs = s.executeQuery(sql);
+
+            Map<Integer, String> gsonReturn = new HashMap<>();
 
             Gson gson = new Gson();
 
+            int count = 0;
+
             while (rs.next()) {
-                gsonReturn.put(rs.getString(2), rs.getString(3));
+                System.out.println("rs.getString(3) = " + rs.getString(3));
+                gsonReturn.put(count, rs.getString(2) + ": " + rs.getString(3));
+                count++;
             }
+
+            System.out.println(gsonReturn.toString());
 
             String output = gson.toJson(gsonReturn);
 
