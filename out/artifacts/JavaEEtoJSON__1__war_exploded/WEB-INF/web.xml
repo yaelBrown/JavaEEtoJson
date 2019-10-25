@@ -1,0 +1,6 @@
+<filter>
+    <filter-name>CorsFilter</filter-name>
+    <filter-class>CORSFilter</filter-class>
+    <filter-name>CorsFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter>

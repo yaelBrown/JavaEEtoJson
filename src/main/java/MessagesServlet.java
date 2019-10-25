@@ -45,8 +45,9 @@ public class MessagesServlet extends HttpServlet {
             PrintWriter out = response.getWriter();
             out.print("Message saved!");
 
-
     }
+
+
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("Someone wanted to see the messages !");
@@ -91,4 +92,18 @@ public class MessagesServlet extends HttpServlet {
         }
 
     }
+
+    //for Preflight
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        setAccessControlHeaders(resp);
+        resp.setStatus(HttpServletResponse.SC_OK);
+    }
+
+    private void setAccessControlHeaders(HttpServletResponse resp) {
+        resp.setHeader("Access-Control-Allow-Origin", "http://localhost:9000");
+        resp.setHeader("Access-Control-Allow-Methods", "GET");
+    }
+
 }
